@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  FARMER
+  BUYER
+  TRANSPORTER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+  id           String     @id @default(uuid())
+  fullName     String
+  email        String     @unique
+  passwordHash String
+  phone        String?
+  role         UserRole
+  status       UserStatus @default(ACTIVE)
+  isVerified   Boolean    @default(false)
+
+  emailNotifications Boolean @default(true)
+  smsNotifications   Boolean @default(false)
+  theme              String  @default("light")
+  language           String  @default("en")
+
+  products Product[]
+  orders   Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id          String  @id @default(uuid())
+  name        String
+  description String
+  price       Float
+  quantity    Int
+  imageUrl    String?
+  isAvailable Boolean @default(true)
+
+  farmerId String
+  farmer   User   @relation(fields: [farmerId], references: [id])
+
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id      String @id @default(uuid())
+  buyerId String
+  buyer   User   @relation(fields: [buyerId], references: [id])
+
+  status      OrderStatus @default(PENDING)
+  totalAmount Float
+
+  items OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model OrderItem {
+  id String @id @default(uuid())
+
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  quantity Int
+  price    Float
+
+  createdAt DateTime @default(now())
+}
