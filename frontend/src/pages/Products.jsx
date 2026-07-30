@@ -5,63 +5,91 @@ import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
 import Footer from "../components/Footer";
 
+import "./Products.css";
+
 function Products() {
-  const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const [products,setProducts]=useState([]);
+  const [search,setSearch]=useState("");
 
-  const fetchProducts = async () => {
-    try {
-      const response = await api.get("/products");
-      setProducts(response.data.products);
-    } catch (error) {
-      console.log(error);
-    }
+  useEffect(()=>{
+      fetchProducts();
+  },[]);
+
+  const fetchProducts=async()=>{
+
+      try{
+
+          const res=await api.get("/products");
+
+          setProducts(res.data.products);
+
+      }catch(err){
+
+          console.log(err);
+
+      }
+
   };
 
-  return (
-    <>
-      <Navbar />
+  const filteredProducts=products.filter(product=>
 
-      <div
-        style={{
-          textAlign: "center",
-          padding: "50px 20px",
-          background: "#e8f5e9",
-        }}
-      >
-        <h1>AgriMind Marketplace</h1>
+      product.name.toLowerCase().includes(search.toLowerCase())
+
+  );
+
+  return(
+    <>
+
+      <Navbar/>
+
+      <section className="hero">
+
+        <h1>🌾 AgriMind Marketplace</h1>
 
         <p>
-          Buy fresh farm products directly
-          from trusted farmers
+
+          Buy fresh agricultural products directly from trusted farmers across Nigeria.
+
         </p>
-      </div>
 
-      <div
-  style={{
-    padding: "30px",
-    display: "grid",
-    gridTemplateColumns:
-      "repeat(auto-fit, minmax(320px, 1fr))",
-    gap: "25px",
-    maxWidth: "1200px",
-    margin: "0 auto",
-  }}
->
-  {products.map((product) => (
-    <ProductCard
-      key={product.id}
-      product={product}
-    />
-  ))}
-</div>
+      </section>
 
-      <Footer />
+      <section className="products-section">
+
+        <div className="products-header">
+
+            <h2>Available Products</h2>
+
+            <input
+                className="search-box"
+                placeholder="Search products..."
+                value={search}
+                onChange={(e)=>setSearch(e.target.value)}
+            />
+
+        </div>
+
+        <div className="products-grid">
+
+            {filteredProducts.map(product=>(
+
+                <ProductCard
+                    key={product.id}
+                    product={product}
+                />
+
+            ))}
+
+        </div>
+
+      </section>
+
+      <Footer/>
+
     </>
   );
+
 }
 
 export default Products;
