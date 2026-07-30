@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
 import ProductCard from "../components/ProductCard";
 import productService from "../services/productService";
 import "./Home.css";
@@ -21,6 +22,7 @@ function Home() {
 
   return (
     <div className="home">
+      <Navbar />
 
       <section className="hero">
         <h1>🌾 AgriMind Marketplace</h1>
@@ -45,7 +47,6 @@ function Home() {
           )}
         </div>
       </section>
-
     </div>
   );
 }
