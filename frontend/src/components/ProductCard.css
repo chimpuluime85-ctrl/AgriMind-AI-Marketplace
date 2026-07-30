@@ -23,14 +23,14 @@
   object-fit: cover;
 }
 
-.image-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 80px;
-  background: #e8f5e9;
+.image-placeholder{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:55px;
+    background:#e8f5e9;
 }
 
 .product-content {
@@ -78,4 +78,32 @@
 
 .view-btn:hover {
   background: #1b5e20;
+}
+
+@media (max-width:768px){
+
+.product-card{
+    border-radius:16px;
+}
+
+.product-image{
+    height:170px;
+}
+
+.product-name{
+    font-size:28px;
+}
+
+.product-price{
+    font-size:30px;
+}
+
+.product-content{
+    padding:18px;
+}
+
+.view-btn{
+    margin:15px;
+}
+
 }

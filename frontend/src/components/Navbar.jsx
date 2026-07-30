@@ -19,7 +19,7 @@ function Navbar() {
     <nav className="navbar">
 
       <Link to="/" className="logo">
-        🌾 <span>AgriMind Marketplace</span>
+        🌾 🌾 <span>AgriMind</span>
       </Link>
 
       <div
