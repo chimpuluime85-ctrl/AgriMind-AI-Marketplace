@@ -3,14 +3,12 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import "./Dashboard.css";
 
 function Dashboard() {
-  const user = JSON.parse(
-    localStorage.getItem("user")
-  );
+  const user = JSON.parse(localStorage.getItem("user"));
 
-  const [totalProducts, setTotalProducts] =
-    useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
 
   useEffect(() => {
     fetchMyProducts();
@@ -18,21 +16,15 @@ function Dashboard() {
 
   const fetchMyProducts = async () => {
     try {
-      const token =
-        localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-      const response = await api.get(
-        "/products/my-products",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.get("/products/my-products", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      setTotalProducts(
-        response.data.products.length
-      );
+      setTotalProducts(response.data.products.length);
     } catch (error) {
       console.log(error);
     }
@@ -42,184 +34,98 @@ function Dashboard() {
     <>
       <Navbar />
 
-      <div
-        style={{
-          minHeight: "80vh",
-          backgroundColor: "#f5f7fa",
-          padding: "40px 20px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-          }}
-        >
-          <h1
-            style={{
-              textAlign: "center",
-              marginBottom: "10px",
-            }}
-          >
-            Farmer Dashboard
-          </h1>
+      <div className="dashboard">
+        <div className="dashboard-container">
 
-          <p
-            style={{
-              textAlign: "center",
-              color: "#666",
-              marginBottom: "40px",
-            }}
-          >
-            Manage your products and marketplace activities
-          </p>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fit, minmax(250px, 1fr))",
-              gap: "20px",
-            }}
-          >
-            <div
-              style={{
-                background: "white",
-                padding: "25px",
-                borderRadius: "12px",
-                boxShadow:
-                  "0 2px 10px rgba(0,0,0,0.08)",
-              }}
-            >
-              <h3>Welcome</h3>
-              <p>{user?.fullName}</p>
-            </div>
-
-            <div
-              style={{
-                background: "white",
-                padding: "25px",
-                borderRadius: "12px",
-                boxShadow:
-                  "0 2px 10px rgba(0,0,0,0.08)",
-              }}
-            >
-              <h3>Total Products</h3>
-              <h2
-                style={{
-                  color: "#2e7d32",
-                }}
-              >
-                {totalProducts}
-              </h2>
-            </div>
-
-            <div
-              style={{
-                background: "white",
-                padding: "25px",
-                borderRadius: "12px",
-                boxShadow:
-                  "0 2px 10px rgba(0,0,0,0.08)",
-              }}
-            >
-              <h3>Role</h3>
-              <p>{user?.role}</p>
-            </div>
-          </div>
-
-          <div
-            style={{
-              marginTop: "40px",
-              display: "flex",
-              gap: "15px",
-              flexWrap: "wrap",
-              justifyContent: "center",
-            }}
-          >
-            <Link to="/create-product">
-              <button
-                style={{
-                  padding: "14px 24px",
-                  backgroundColor: "#2e7d32",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontSize: "16px",
-                }}
-              >
-                Add New Product
-              </button>
-            </Link>
-
-            <Link to="/my-products">
-  <button
-    style={{
-      padding: "14px 24px",
-      backgroundColor: "#1565c0",
-      color: "white",
-      border: "none",
-      borderRadius: "8px",
-      cursor: "pointer",
-      fontSize: "16px",
-    }}
-  >
-    My Products
-  </button>
-</Link>
-
-<Link to="/ai-assistant">
-  <button
-    style={{
-      padding: "14px 24px",
-      backgroundColor: "#ff9800",
-      color: "white",
-      border: "none",
-      borderRadius: "8px",
-      cursor: "pointer",
-      fontSize: "16px",
-    }}
-  >
-    Ask AgriMind AI
-  </button>
-</Link>
-
-            <Link to="/my-products">
-              <button
-                style={{
-                  padding: "14px 24px",
-                  backgroundColor: "#1565c0",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontSize: "16px",
-                }}
-              >
-                My Products
-              </button>
-            </Link>
-          </div>
-
-          <div
-            style={{
-              marginTop: "50px",
-              background: "white",
-              padding: "25px",
-              borderRadius: "12px",
-              boxShadow:
-                "0 2px 10px rgba(0,0,0,0.08)",
-            }}
-          >
-            <h2>Quick Actions</h2>
+          <div className="dashboard-header">
+            <h1>👋 Welcome, {user?.fullName}</h1>
 
             <p>
-              Add new products, manage existing
-              products, and grow your agricultural
-              business through the AgriMind Marketplace.
+              Manage your products, monitor your listings, and grow your agricultural business using AgriMind Marketplace.
             </p>
           </div>
+
+          <div className="stats-grid">
+
+            <div className="stat-card">
+              <h3>Total Products</h3>
+              <div className="stat-number">
+                {totalProducts}
+              </div>
+            </div>
+
+            <div className="stat-card">
+              <h3>Role</h3>
+              <div className="stat-number">
+                {user?.role}
+              </div>
+            </div>
+
+            <div className="stat-card">
+              <h3>Account Status</h3>
+              <div className="stat-number">
+                Active
+              </div>
+            </div>
+
+          </div>
+
+          <div className="actions-grid">
+
+            <Link
+              to="/create-product"
+              className="action-card"
+            >
+              <div className="action-icon">➕</div>
+
+              <h3>Add Product</h3>
+
+              <p>
+                Create a new farm product listing.
+              </p>
+            </Link>
+
+            <Link
+              to="/my-products"
+              className="action-card"
+            >
+              <div className="action-icon">📦</div>
+
+              <h3>My Products</h3>
+
+              <p>
+                View and manage your listed products.
+              </p>
+            </Link>
+
+            <Link
+              to="/ai-assistant"
+              className="action-card"
+            >
+              <div className="action-icon">🤖</div>
+
+              <h3>AI Assistant</h3>
+
+              <p>
+                Ask AgriMind AI for farming advice.
+              </p>
+            </Link>
+
+            <Link
+              to="/"
+              className="action-card"
+            >
+              <div className="action-icon">🛒</div>
+
+              <h3>Marketplace</h3>
+
+              <p>
+                Browse fresh products from farmers.
+              </p>
+            </Link>
+
+          </div>
+
         </div>
       </div>
 
