@@ -7,17 +7,20 @@ function Navbar() {
   const token = localStorage.getItem("token");
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const closeMenu = () => setMenuOpen(false);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
     <nav className="navbar">
-      <div className="logo">
-        🌱 <span>AgriMind</span>
-      </div>
+
+      <Link to="/" className="logo">
+        🌾 <span>AgriMind Marketplace</span>
+      </Link>
 
       <div
         className={`hamburger ${menuOpen ? "open" : ""}`}
@@ -27,24 +30,51 @@ function Navbar() {
       </div>
 
       <div className={`nav-links ${menuOpen ? "active" : ""}`}>
-        <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
 
-        {token ? (
+        <Link to="/" onClick={closeMenu}>
+          Marketplace
+        </Link>
+
+        {!token ? (
           <>
-            <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-            <Link to="/my-products" onClick={() => setMenuOpen(false)}>Market Place</Link>
-            <Link to="/create-product" onClick={() => setMenuOpen(false)}>Add Product</Link>
-            <Link to="/ai-assistant" onClick={() => setMenuOpen(false)}>AI Assistant</Link>
+            <Link to="/login" onClick={closeMenu}>
+              Farmer Login
+            </Link>
 
-            <button onClick={handleLogout}>Logout</button>
+            <Link
+              to="/register"
+              className="register-btn"
+              onClick={closeMenu}
+            >
+              Register as Farmer
+            </Link>
           </>
         ) : (
           <>
-            <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
-            <Link to="/register" onClick={() => setMenuOpen(false)}>Register</Link>
+            <Link to="/dashboard" onClick={closeMenu}>
+              Dashboard
+            </Link>
+
+            <Link to="/my-products" onClick={closeMenu}>
+              My Products
+            </Link>
+
+            <Link to="/create-product" onClick={closeMenu}>
+              Add Product
+            </Link>
+
+            <Link to="/ai-assistant" onClick={closeMenu}>
+              AI Assistant
+            </Link>
+
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
           </>
         )}
+
       </div>
+
     </nav>
   );
 }
