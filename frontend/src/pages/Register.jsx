@@ -1,41 +1,40 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../services/api";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import "./Register.css";
 
 function Register() {
   const navigate = useNavigate();
 
-  const [formData, setFormData] =
-    useState({
-      fullName: "",
-      email: "",
-      password: "",
-      phone: "",
-      role: "FARMER",
-    });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    phone: "",
+    role: "FARMER",
+  });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    try {
-      await api.post(
-        "/auth/register",
-        formData
-      );
+    setLoading(true);
 
-      alert(
-        "Registration successful"
-      );
+    try {
+      await api.post("/auth/register", formData);
+
+      alert("Registration successful!");
 
       navigate("/login");
     } catch (error) {
@@ -43,6 +42,8 @@ function Register() {
         error.response?.data?.message ||
           "Registration failed"
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -50,125 +51,108 @@ function Register() {
     <>
       <Navbar />
 
-      <div
-        style={{
-          minHeight: "80vh",
-          backgroundColor: "#f5f7fa",
-          padding: "40px 20px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "600px",
-            margin: "0 auto",
-            background: "white",
-            padding: "30px",
-            borderRadius: "12px",
-            boxShadow:
-              "0 2px 10px rgba(0,0,0,0.08)",
-          }}
-        >
-          <h1
-            style={{
-              textAlign: "center",
-              marginBottom: "10px",
-            }}
-          >
-            Create Account
+      <div className="register-page">
+
+        <div className="register-card">
+
+          <h1 className="register-title">
+            Create Account 🌱
           </h1>
 
-          <p
-            style={{
-              textAlign: "center",
-              color: "#666",
-              marginBottom: "30px",
-            }}
-          >
-            Join the AgriMind Marketplace
+          <p className="register-subtitle">
+            Join AgriMind Marketplace today.
           </p>
 
           <form onSubmit={handleRegister}>
-            <input
-              type="text"
-              name="fullName"
-              placeholder="Full Name"
-              value={formData.fullName}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "12px",
-                marginBottom: "15px",
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-              }}
-            />
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "12px",
-                marginBottom: "15px",
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-              }}
-            />
+            <div className="form-group">
+              <label>Full Name</label>
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "12px",
-                marginBottom: "15px",
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-              }}
-            />
+              <input
+                className="form-input"
+                type="text"
+                name="fullName"
+                placeholder="Enter your full name"
+                value={formData.fullName}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-            <input
-              type="text"
-              name="phone"
-              placeholder="Phone Number"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: "12px",
-                marginBottom: "20px",
-                border: "1px solid #ddd",
-                borderRadius: "6px",
-              }}
-            />
+            <div className="form-group">
+              <label>Email Address</label>
+
+              <input
+                className="form-input"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password</label>
+
+              <div className="password-wrapper">
+
+                <input
+                  className="form-input"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Create a password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+
+                <button
+                  type="button"
+                  className="toggle-password"
+                  onClick={() =>
+                    setShowPassword(!showPassword)
+                  }
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>Phone Number</label>
+
+              <input
+                className="form-input"
+                type="text"
+                name="phone"
+                placeholder="Enter your phone number"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
             <button
-              type="submit"
-              style={{
-                width: "100%",
-                padding: "14px",
-                backgroundColor: "#2e7d32",
-                color: "white",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-                fontSize: "16px",
-              }}
+              className="register-btn"
+              disabled={loading}
             >
-              Register
+              {loading ? "Creating Account..." : "Register"}
             </button>
+
           </form>
+
+          <div className="login-link">
+            Already have an account?{" "}
+            <Link to="/login">
+              Login
+            </Link>
+          </div>
+
         </div>
+
       </div>
 
       <Footer />
