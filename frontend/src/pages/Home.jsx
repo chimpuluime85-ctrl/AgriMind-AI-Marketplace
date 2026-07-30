@@ -51,4 +51,11 @@ function Home() {
   );
 }
 
+<div className="search-container">
+  <input
+    type="text"
+    placeholder="🔍 Search for maize, cassava, tomatoes..."
+  />
+</div>
+
 export default Home;

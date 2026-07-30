@@ -18,6 +18,27 @@
   margin: auto;
 }
 
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 35px 0;
+}
+
+.search-container input {
+  width: 600px;
+  max-width: 90%;
+  padding: 15px 20px;
+  border-radius: 50px;
+  border: 2px solid #ddd;
+  outline: none;
+  font-size: 16px;
+  transition: .3s;
+}
+
+.search-container input:focus {
+  border-color: #2e7d32;
+}
+
 .products-section {
   max-width: 1200px;
   margin: auto;
