@@ -32,7 +32,7 @@ function Navbar() {
         {token ? (
           <>
             <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-            <Link to="/my-products" onClick={() => setMenuOpen(false)}>My Products</Link>
+            <Link to="/my-products" onClick={() => setMenuOpen(false)}>Market Place</Link>
             <Link to="/create-product" onClick={() => setMenuOpen(false)}>Add Product</Link>
             <Link to="/ai-assistant" onClick={() => setMenuOpen(false)}>AI Assistant</Link>
 

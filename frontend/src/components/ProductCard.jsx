@@ -1,6 +1,9 @@
 import "./ProductCard.css";
 
 function ProductCard({ product }) {
+
+  console.log(product);
+
   return (
     <div className="product-card">
 
