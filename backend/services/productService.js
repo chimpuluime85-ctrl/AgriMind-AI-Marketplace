@@ -22,6 +22,8 @@ const getProducts = async () => {
           id: true,
           fullName: true,
           email: true,
+          phone: true,
+          isVerified: true,
         },
       },
     },
@@ -29,75 +31,70 @@ const getProducts = async () => {
 };
 
 const getProductById = async (id) => {
-const product = await prisma.product.findUnique({
-where: { id },
-include: {
-farmer: {
-select: {
-id: true,
-fullName: true,
-email: true,
-},
-},
-},
-});
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: {
+      farmer: {
+        select: {
+          id: true,
+          fullName: true,
+          email: true,
+          phone: true,
+          isVerified: true,
+        },
+      },
+    },
+  });
 
-if (!product) {
-throw new Error("Product not found");
-}
+  if (!product) {
+    throw new Error("Product not found");
+  }
 
-return product;
+  return product;
 };
 
-const updateProduct = async (
-productId,
-userId,
-data
-) => {
-const product = await prisma.product.findUnique({
-where: { id: productId },
-});
+const updateProduct = async (productId, userId, data) => {
+  const product = await prisma.product.findUnique({
+    where: { id: productId },
+  });
 
-if (!product) {
-throw new Error("Product not found");
-}
+  if (!product) {
+    throw new Error("Product not found");
+  }
 
-if (product.farmerId !== userId) {
-throw new Error("Unauthorized");
-}
+  if (product.farmerId !== userId) {
+    throw new Error("Unauthorized");
+  }
 
-return await prisma.product.update({
-where: { id: productId },
-data: {
-name: data.name,
-description: data.description,
-price: data.price,
-quantity: data.quantity,
-},
-});
+  return await prisma.product.update({
+    where: { id: productId },
+    data: {
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      quantity: data.quantity,
+    },
+  });
 };
 
-const deleteProduct = async (
-productId,
-userId
-) => {
-const product = await prisma.product.findUnique({
-where: { id: productId },
-});
+const deleteProduct = async (productId, userId) => {
+  const product = await prisma.product.findUnique({
+    where: { id: productId },
+  });
 
-if (!product) {
-throw new Error("Product not found");
-}
+  if (!product) {
+    throw new Error("Product not found");
+  }
 
-if (product.farmerId !== userId) {
-throw new Error("Unauthorized");
-}
+  if (product.farmerId !== userId) {
+    throw new Error("Unauthorized");
+  }
 
-await prisma.product.delete({
-where: { id: productId },
-});
+  await prisma.product.delete({
+    where: { id: productId },
+  });
 
-return true;
+  return true;
 };
 
 const getMyProducts = async (userId) => {

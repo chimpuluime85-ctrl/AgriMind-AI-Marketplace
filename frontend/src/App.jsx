@@ -1,21 +1,24 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Products from "./pages/Products";
-import CreateProduct from "./pages/CreateProduct";
 import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
+import CreateProduct from "./pages/CreateProduct";
 import MyProducts from "./pages/MyProducts";
 import AIAssistant from "./pages/AIAssistant";
+import ProductDetails from "./pages/ProductDetails";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* Public Routes */}
         <Route
           path="/"
-          element={<Products />}
+          element={<Home />}
         />
 
         <Route
@@ -24,26 +27,23 @@ function App() {
         />
 
         <Route
-  path="/dashboard"
-  element={
-    <ProtectedRoute>
-      <Dashboard />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/my-products"
-  element={
-    <ProtectedRoute>
-      <MyProducts />
-    </ProtectedRoute>
-  }
-/>
-
-        <Route
           path="/register"
           element={<Register />}
+        />
+
+        <Route
+          path="/product/:id"
+          element={<ProductDetails />}
+        />
+
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
         />
 
         <Route
@@ -54,14 +54,25 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
-  path="/ai-assistant"
-  element={
-    <ProtectedRoute>
-      <AIAssistant />
-    </ProtectedRoute>
-  }
-/>
+          path="/my-products"
+          element={
+            <ProtectedRoute>
+              <MyProducts />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/ai-assistant"
+          element={
+            <ProtectedRoute>
+              <AIAssistant />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
     </BrowserRouter>
   );
