@@ -4,9 +4,7 @@ import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
-
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
@@ -22,48 +20,30 @@ function Navbar() {
       </div>
 
       <div
-        className={`nav-links ${menuOpen ? "active" : ""}`}
+        className={`hamburger ${menuOpen ? "open" : ""}`}
+        onClick={() => setMenuOpen(!menuOpen)}
       >
-        <Link to="/">Home</Link>
+        ☰
+      </div>
+
+      <div className={`nav-links ${menuOpen ? "active" : ""}`}>
+        <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
 
         {token ? (
           <>
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+            <Link to="/my-products" onClick={() => setMenuOpen(false)}>My Products</Link>
+            <Link to="/create-product" onClick={() => setMenuOpen(false)}>Add Product</Link>
+            <Link to="/ai-assistant" onClick={() => setMenuOpen(false)}>AI Assistant</Link>
 
-            <Link to="/my-products">
-              My Products
-            </Link>
-
-            <Link to="/create-product">
-              Add Product
-            </Link>
-
-            <Link to="/ai-assistant">
-              AI Assistant
-            </Link>
-
-            <button onClick={handleLogout}>
-              Logout
-            </button>
+            <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
           <>
-            <Link to="/login">Login</Link>
-
-            <Link to="/register">
-              Register
-            </Link>
+            <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
+            <Link to="/register" onClick={() => setMenuOpen(false)}>Register</Link>
           </>
         )}
-      </div>
-
-      <div
-        className="hamburger"
-        onClick={() =>
-          setMenuOpen(!menuOpen)
-        }
-      >
-        ☰
       </div>
     </nav>
   );
