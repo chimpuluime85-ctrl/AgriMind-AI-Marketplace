@@ -1,92 +1,69 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-
     navigate("/login");
   };
 
   return (
-    <nav
-      style={{
-        backgroundColor: "#2e7d32",
-        color: "white",
-        padding: "15px 40px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <h2>🌱 AgriMind</h2>
+    <nav className="navbar">
+      <div className="logo">
+        🌱 <span>AgriMind</span>
+      </div>
 
-      <div>
-        <a
-          href="/"
-          style={{
-            color: "white",
-            marginRight: "20px",
-            textDecoration: "none",
-          }}
-        >
-          Home
-        </a>
+      <div
+        className={`nav-links ${menuOpen ? "active" : ""}`}
+      >
+        <Link to="/">Home</Link>
 
         {token ? (
           <>
-            <a
-              href="/dashboard"
-              style={{
-                color: "white",
-                marginRight: "20px",
-                textDecoration: "none",
-              }}
-            >
-              Dashboard
-            </a>
+            <Link to="/dashboard">Dashboard</Link>
 
-            <button
-              onClick={handleLogout}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "white",
-                cursor: "pointer",
-                fontSize: "16px",
-              }}
-            >
+            <Link to="/my-products">
+              My Products
+            </Link>
+
+            <Link to="/create-product">
+              Add Product
+            </Link>
+
+            <Link to="/ai-assistant">
+              AI Assistant
+            </Link>
+
+            <button onClick={handleLogout}>
               Logout
             </button>
           </>
         ) : (
           <>
-            <a
-              href="/login"
-              style={{
-                color: "white",
-                marginRight: "20px",
-                textDecoration: "none",
-              }}
-            >
-              Login
-            </a>
+            <Link to="/login">Login</Link>
 
-            <a
-              href="/register"
-              style={{
-                color: "white",
-                textDecoration: "none",
-              }}
-            >
+            <Link to="/register">
               Register
-            </a>
+            </Link>
           </>
         )}
+      </div>
+
+      <div
+        className="hamburger"
+        onClick={() =>
+          setMenuOpen(!menuOpen)
+        }
+      >
+        ☰
       </div>
     </nav>
   );
